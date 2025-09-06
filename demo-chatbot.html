@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Chatbot - Transporte Serrano del Oriente</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chatbot Widget CSS -->
+    <link rel="stylesheet" href="assets/css/chatbot-widget.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .demo-container {
+            padding: 50px 0;
+        }
+        
+        .demo-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .demo-button {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 123, 255, 0.4);
+            color: white;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+        }
+        
+        .chatbot-preview {
+            position: relative;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23e0e0e0" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="white"/><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 300px;
+            margin: 20px 0;
+            border: 2px dashed #007bff;
+            text-align: center;
+            color: #666;
+        }
+        
+        .arrow-indicator {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: #007bff;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container demo-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="demo-card p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <h1 class="display-4 mb-3">
+                            <i class="fas fa-robot text-primary"></i>
+                            Chatbot Integrado
+                        </h1>
+                        <p class="lead">Asistente Virtual de Transporte Serrano del Oriente</p>
+                        <div class="status-indicator status-success">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Sistema Completamente Funcional</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de Demo -->
+                    <div class="demo-section text-center">
+                        <h3 class="mb-4">🎮 Controles de Demostración</h3>
+                        <button class="btn demo-button" onclick="openChatbot()">
+                            <i class="fas fa-comments"></i> Abrir Chatbot
+                        </button>
+                        <button class="btn demo-button" onclick="closeChatbot()">
+                            <i class="fas fa-times"></i> Cerrar Chatbot
+                        </button>
+                        <button class="btn demo-button" onclick="clearChatbotChat()">
+                            <i class="fas fa-eraser"></i> Limpiar Chat
+                        </button>
+                        <button class="btn demo-button" onclick="exportChatbotChat()">
+                            <i class="fas fa-download"></i> Exportar Chat
+                        </button>
+                    </div>
+                    
+                    <!-- Preview Area -->
+                    <div class="demo-section">
+                        <h3 class="mb-4">👀 Área de Vista Previa</h3>
+                        <div class="chatbot-preview">
+                            <i class="fas fa-mouse-pointer" style="font-size: 4rem; color: #ccc; margin-bottom: 20px;"></i>
+                            <h4>¡Mira en la esquina inferior derecha!</h4>
+                            <p>El chatbot aparece como un botón flotante 💬</p>
+                            <p>Click en él para iniciar una conversación</p>
+                            
+                            <div class="arrow-indicator">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Features -->
+                    <div class="demo-section">
+                        <h3 class="mb-4">✨ Características Implementadas</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="feature-card text-center">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h5>Inteligencia Artificial</h5>
+                                    <p>Procesamiento de lenguaje natural con Sentence Transformers</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="feature-card text-center">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <h5>Responsive Design</h5>
+                                    <p>Se adapta perfectamente a todos los dispositivos</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="feature-card text-center">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-rocket"></i>
+                                    </div>
+                                    <h5>Tiempo Real</h5>
+                                    <p>Respuestas instantáneas con indicadores de escritura</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Test Messages -->
+                    <div class="demo-section">
+                        <h3 class="mb-4">💬 Mensajes de Prueba</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>🎯 Prueba estas consultas:</h6>
+                                <ul class="list-unstyled">
+                                    <li><code>"Hola, buenos días"</code></li>
+                                    <li><code>"¿Cuáles son los horarios?"</code></li>
+                                    <li><code>"¿Cuánto cuesta un pasaje?"</code></li>
+                                    <li><code>"¿Cómo puedo reservar?"</code></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>🔬 Funciones avanzadas:</h6>
+                                <ul class="list-unstyled">
+                                    <li><span class="badge bg-primary">Enter</span> para enviar</li>
+                                    <li><span class="badge bg-primary">Escape</span> para cerrar</li>
+                                    <li><span class="badge bg-success">Click</span> en sugerencias</li>
+                                    <li><span class="badge bg-info">Scroll</span> automático</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="demo-section">
+                        <div class="alert alert-success">
+                            <h5 class="alert-heading">
+                                <i class="fas fa-check-circle"></i> 
+                                ¡Integración Completada!
+                            </h5>
+                            <p class="mb-0">
+                                El chatbot está completamente integrado y funcional en el frontend. 
+                                Utiliza IA avanzada para comprender y responder consultas sobre transporte.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="text-center pt-4 border-top">
+                        <p class="text-muted">
+                            <i class="fas fa-bus"></i>
+                            <strong>Transporte Serrano del Oriente</strong> - Sistema de Gestión con IA
+                            <br>
+                            <small>Chatbot integrado y funcionando 🚀</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chatbot Widget -->
+    <script src="assets/js/chatbot-widget.js"></script>
+    
+    <script>
+        // Configuración de la demo
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎮 Demo del Chatbot cargada');
+            
+            // Mostrar notificación de bienvenida después de un delay
+            setTimeout(() => {
+                if (window.chatbotWidget && !window.chatbotWidget.isOpen) {
+                    window.chatbotWidget.showNotification();
+                }
+            }, 3000);
+            
+            // Log de eventos para debugging
+            console.log('Funciones disponibles:');
+            console.log('- openChatbot()');
+            console.log('- closeChatbot()');  
+            console.log('- clearChatbotChat()');
+            console.log('- exportChatbotChat()');
+        });
+        
+        // Función para mostrar mensaje de demo
+        function mostrarMensajeDemo(mensaje) {
+            if (window.chatbotWidget) {
+                if (!window.chatbotWidget.isOpen) {
+                    window.chatbotWidget.open();
+                }
+                setTimeout(() => {
+                    window.chatbotWidget.input.value = mensaje;
+                    window.chatbotWidget.sendMessage();
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>

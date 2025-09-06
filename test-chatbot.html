@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Chatbot - Transporte Serrano del Oriente</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chatbot Widget CSS -->
+    <link rel="stylesheet" href="assets/css/chatbot-widget.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .status-good {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 500;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 123, 255, 0.4);
+        }
+        
+        .arrow-pointer {
+            position: fixed;
+            bottom: 100px;
+            right: 100px;
+            font-size: 3rem;
+            color: #ff6b35;
+            animation: bounce 2s infinite;
+            z-index: 2000;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="test-card">
+                    <h1 class="display-4 mb-4">
+                        <i class="fas fa-robot text-primary"></i>
+                        Chatbot Test
+                    </h1>
+                    
+                    <p class="lead mb-4">
+                        Prueba del chatbot integrado de Transporte Serrano del Oriente
+                    </p>
+                    
+                    <!-- Estado de conexión -->
+                    <div class="mb-4">
+                        <h5>Estado de conexión:</h5>
+                        <div id="connection-status" class="status-error">
+                            🔄 Verificando conexión...
+                        </div>
+                    </div>
+                    
+                    <!-- Instrucciones -->
+                    <div class="mb-4">
+                        <h5>📋 Instrucciones:</h5>
+                        <ol class="text-start">
+                            <li>Asegúrate de que el backend esté corriendo en <code>http://localhost:5000</code></li>
+                            <li>Mira en la esquina inferior derecha por el botón flotante 💬</li>
+                            <li>Click en el botón para abrir el chatbot</li>
+                            <li>Escribe preguntas como "Hola" o "¿Cuáles son los horarios?"</li>
+                        </ol>
+                    </div>
+                    
+                    <!-- Botones de prueba -->
+                    <div class="mb-4">
+                        <h5>🎮 Controles de prueba:</h5>
+                        <button class="test-button" onclick="testConnection()">
+                            <i class="fas fa-wifi"></i> Probar Conexión
+                        </button>
+                        <button class="test-button" onclick="openChatbot()">
+                            <i class="fas fa-comments"></i> Abrir Chat
+                        </button>
+                        <button class="test-button" onclick="sendTestMessage()">
+                            <i class="fas fa-paper-plane"></i> Mensaje Test
+                        </button>
+                    </div>
+                    
+                    <!-- Mensajes de prueba sugeridos -->
+                    <div class="mb-4">
+                        <h6>💬 Mensajes de prueba sugeridos:</h6>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('Hola')">Hola</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('¿Cuáles son los horarios?')">Horarios</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('¿Cuánto cuesta un pasaje?')">Precios</button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('¿Cómo reservo?')">Reservas</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Estado del backend -->
+                    <div class="alert alert-info">
+                        <strong>🔧 Backend requerido:</strong><br>
+                        El chatbot necesita que el servidor backend esté ejecutándose en:<br>
+                        <code>http://localhost:5000</code><br>
+                        <small>Ejecuta: <code>cd backend && python test_chatbot_server.py</code></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flecha apuntando al chatbot -->
+    <div class="arrow-pointer">
+        ⬇️
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/chatbot-widget.js"></script>
+    
+    <script>
+        // Función para probar la conexión
+        async function testConnection() {
+            const statusEl = document.getElementById('connection-status');
+            statusEl.innerHTML = '🔄 Probando conexión...';
+            statusEl.className = 'status-error';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/chatbot/health');
+                const data = await response.json();
+                
+                if (data.success) {
+                    statusEl.innerHTML = '✅ Conectado correctamente - IA disponible';
+                    statusEl.className = 'status-good';
+                } else {
+                    statusEl.innerHTML = '⚠️ Conectado pero con errores';
+                    statusEl.className = 'status-error';
+                }
+            } catch (error) {
+                statusEl.innerHTML = '❌ Error de conexión - Verifica que el backend esté corriendo';
+                statusEl.className = 'status-error';
+                console.error('Error de conexión:', error);
+            }
+        }
+        
+        // Función para enviar mensaje rápido
+        function sendQuickMessage(message) {
+            if (window.chatbotWidget) {
+                if (!window.chatbotWidget.isOpen) {
+                    window.chatbotWidget.open();
+                }
+                setTimeout(() => {
+                    window.chatbotWidget.input.value = message;
+                    window.chatbotWidget.sendMessage();
+                }, 500);
+            } else {
+                alert('El widget del chatbot no está listo aún. Espera un momento.');
+            }
+        }
+        
+        // Función para enviar mensaje de prueba
+        function sendTestMessage() {
+            sendQuickMessage('Hola, soy un mensaje de prueba');
+        }
+        
+        // Auto-test de conexión al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎮 Página de prueba cargada');
+            
+            // Probar conexión automáticamente después de un momento
+            setTimeout(testConnection, 1000);
+            
+            // Mostrar notificación después de un tiempo
+            setTimeout(() => {
+                if (window.chatbotWidget && !window.chatbotWidget.isOpen) {
+                    window.chatbotWidget.showNotification();
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
